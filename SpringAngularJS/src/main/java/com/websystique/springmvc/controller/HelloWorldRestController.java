@@ -2,11 +2,18 @@ package com.websystique.springmvc.controller;
  
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -122,5 +129,29 @@ public class HelloWorldRestController {
         userService.deleteAllUsers();
         return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
     }
+    
+    //------------------- LogOut --------------------------------------------------------
+    
+	@RequestMapping(value="/logout", method = RequestMethod.GET)
+	   public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+	      Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	      if (auth != null){    
+	         new SecurityContextLogoutHandler().logout(request, response, auth);
+	      }
+	      return "welcome";
+	   }
+    
+    
+    private String getPrincipal(){
+		String userName = null;
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		if (principal instanceof UserDetails) {
+			userName = ((UserDetails)principal).getUsername();
+		} else {
+			userName = principal.toString();
+		}
+		return userName;
+	}
  
 }

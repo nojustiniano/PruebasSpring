@@ -3,11 +3,14 @@
 	<name>SpringAngularJS</name>
 	<comment>
 	</comment>
-	
 	<projects>
 	</projects>
-	
 	<buildSpec>
+		<buildCommand>
+			<name>tern.eclipse.ide.core.ternBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 		<buildCommand>
 			<name>org.eclipse.wst.jsdt.core.javascriptValidator</name>
 			<arguments>
